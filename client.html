@@ -19,7 +19,6 @@
 
 		<script>
 			const screen = document.getElementById('screen');
-			document.addEventListener('keydown', handleKeyDown);
 			const context = screen.getContext('2d');
 			const currentPlayerId = 'player1'
 			
@@ -40,7 +39,6 @@
 
 					const {keyPressed, playerId} = command;
 					let player = state.players[playerId];
-
 
 					if(keyPressed === 'ArrowUp' && player.y - 1 >= 0){
 						player.y = player.y - 1;
@@ -67,16 +65,44 @@
 			}
 
 			const game = createGame();
+			const keyboardListener = createKeyboardListener();
+			keyboardListener.subscribe(game.movePlayer)
 
-			function handleKeyDown(event) {
-				const keyPressed = event.key;
 
-				const command = {
-					playerId: 'player1',
-					keyPressed
+			function createKeyboardListener(){
+				const state = {
+					observers: []
 				}
 
-				game.movePlayer(command);
+				function subscribe(observerFunction) {
+					state.observers.push(observerFunction)
+				}
+
+				function notifyAll(command) {
+					console.log(`Notifying ${state.observers.length} observers.`);
+
+					for(const observerFunction of state.observers) {
+						console.log(command)
+						observerFunction(command)
+					}
+				}
+
+
+				document.addEventListener('keydown', handleKeyDown);
+				function handleKeyDown(event) {
+					const keyPressed = event.key;
+
+					const command = {
+						playerId: 'player1',
+						keyPressed
+					}
+
+					notifyAll(command);
+				}
+
+				return{
+					subscribe
+				}
 			}
 
 			renderScreen();
@@ -96,7 +122,7 @@
 					context.fillStyle = 'green';
 					context.fillRect(fruit.x, fruit.y, 1, 1);
 				}
-
+				
 				requestAnimationFrame(renderScreen);
 			}
 		</script>
