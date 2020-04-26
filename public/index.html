@@ -28,14 +28,8 @@
 
 			const game = createGame();
 			const keyboardListener = createKeyboardListener(document);
-			keyboardListener.subscribe(game.movePlayer)
-
-			game.addPlayer({playerId: 'player1', playerX: 0, playerY: 0});
-			game.addPlayer({playerId: 'player2', playerX: 4, playerY: 1});
-			game.addPlayer({playerId: 'player3', playerX: 3, playerY: 7});
-			game.addFruit({fruitId: 'fruit1', fruitX: 9, fruitY: 6});
-			game.addFruit({fruitId: 'fruit2', fruitX: 3, fruitY: 4});
-
+			keyboardListener.subscribe(game.movePlayer);
+			
 			renderScreen(screen, game, requestAnimationFrame);
 
 			
