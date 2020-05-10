@@ -19,6 +19,7 @@ export default function createKeyboardListener(document){
 	}
 
 	document.addEventListener('keydown', handleKeyDown);
+	
 	function handleKeyDown(event) {
 		const keyPressed = event.key;
 
